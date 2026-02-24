@@ -1,0 +1,26 @@
+{
+  "name": "mcps",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "bun run generate && bun run compile",
+    "generate": "bun run generate:linear && bun run generate:sentry && bun run generate:context7",
+    "generate:linear": "bunx mcporter generate-cli --server '{\"name\":\"linear\",\"command\":{\"kind\":\"http\",\"url\":\"https://mcp.linear.app/mcp\"},\"source\":{\"kind\":\"local\",\"path\":\"<adhoc>\"},\"auth\":\"oauth\",\"oauthRedirectUrl\":\"http://megumin.serval-tone.ts.net:9801/callback\"}' --output ./generated/linear.ts --name linear",
+    "generate:sentry": "bunx mcporter generate-cli --server '{\"name\":\"sentry\",\"command\":{\"kind\":\"http\",\"url\":\"https://mcp.sentry.dev/mcp\"},\"source\":{\"kind\":\"local\",\"path\":\"<adhoc>\"},\"auth\":\"oauth\",\"oauthRedirectUrl\":\"http://megumin.serval-tone.ts.net:9802/callback\"}' --output ./generated/sentry.ts --name sentry",
+    "generate:context7": "bunx mcporter generate-cli --command https://mcp.context7.com/mcp --output ./generated/context7.ts --name context7",
+    "compile": "bun run compile:linear && bun run compile:sentry && bun run compile:context7",
+    "compile:linear": "bun build ./generated/linear.ts --compile --outfile ./bin/linear",
+    "compile:sentry": "bun build ./generated/sentry.ts --compile --outfile ./bin/sentry",
+    "compile:context7": "bun build ./generated/context7.ts --compile --outfile ./bin/context7"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "mcporter": "^0.7.3"
+  }
+}
